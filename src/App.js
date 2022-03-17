@@ -11,7 +11,7 @@ class Clock extends React.Component {
   componentDidMount() {
     setInterval(
       () => this.timerID = this.tick(),
-      1000
+      500
     );
   }
 
@@ -51,16 +51,28 @@ class Canvas extends React.Component {
     super(props);
     this.state = {
       Width: window.innerWidth - 20,
-      Height: window.innerHeight - 20,
+      Height: window.innerHeight - 120,
       left_position: 0,
       top_position: 0,
       left_increase: true,
-      top_increase: false,
+      top_increase: true,
       dx: 2,
       dy: 2,
       interval: 10,
-      btnNum: 0
+      btnNum: 0,
+      value: 2
     };
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(event) {
+    let speed = event.target.value;
+    this.setState({
+      value: speed,
+      dx: Number(speed),
+      dy: Number(speed)
+    });
   }
 
   btnColors() {
@@ -74,7 +86,7 @@ class Canvas extends React.Component {
     let num = this.state.btnNum % 5;
     let btnColor = colors[num];
     return (
-      'btn btn-' + btnColor 
+      'btn btn-' + btnColor
     );
   }
 
@@ -135,36 +147,63 @@ class Canvas extends React.Component {
 
   }
 
+
   render() {
     return (
-      <div style={{
-        width: this.state.Width,
-        height: this.state.Height,
-        border: 'solid 1px #00bfff',
-        margin: 10,
-        position: 'absolute'
-      }}
-      >
+      <div>
+
         <div style={{
-          position: 'relative',
-          margin: 0,
-          padding: 0,
-          width: '100px',
-          height: '50px',
-          left: this.state.left_position + 'px',
-          top: this.state.top_position + 'px'
+          width: this.state.Width,
+          height: this.state.Height,
+          border: 'solid 1px #00bfff',
+          margin: 10
         }}
-          className={this.btnColors()}
         >
-          <Clock />
+          <div style={{
+            position: 'relative',
+            margin: 0,
+            padding: 0,
+            width: '100px',
+            height: '50px',
+            left: this.state.left_position + 'px',
+            top: this.state.top_position + 'px'
+          }}
+            className={this.btnColors()}
+          >
+            <Clock />
+          </div>
         </div>
+
+          <div
+            style={{
+              height : 80,
+              width: this.state.Width,
+              margin: '10px'
+            }}
+          >
+            <label
+              htmlFor='speedRange'
+              className='form-range'
+            >
+              速度 : {this.state.value}
+            </label>
+            <input 
+              id="speedRange"
+              className='form-range'
+              type='range'
+              min='0'
+              max='10'
+              value={this.state.value}
+              onChange={this.handleChange}
+            />
+          </div>
 
       </div>
     );
   }
 }
 
-const App = () => {
+let App = () => {
   return (
     <div style={{
       position: 'relative'

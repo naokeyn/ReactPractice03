@@ -20,211 +20,239 @@ function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) ===
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () { })); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
 var Clock = /*#__PURE__*/function (_React$Component) {
-    _inherits(Clock, _React$Component);
+  _inherits(Clock, _React$Component);
 
-    var _super = _createSuper(Clock);
+  var _super = _createSuper(Clock);
 
-    function Clock(props) {
-        var _this;
+  function Clock(props) {
+    var _this;
 
-        _classCallCheck(this, Clock);
+    _classCallCheck(this, Clock);
 
-        _this = _super.call(this, props);
-        _this.state = {
-            time: new Date()
-        };
-        return _this;
+    _this = _super.call(this, props);
+    _this.state = {
+      time: new Date()
+    };
+    return _this;
+  }
+
+  _createClass(Clock, [{
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this2 = this;
+
+      setInterval(function () {
+        return _this2.timerID = _this2.tick();
+      }, 500);
     }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      clearInterval(this.timerID);
+    }
+  }, {
+    key: "tick",
+    value: function tick() {
+      this.setState({
+        time: new Date()
+      });
+    }
+  }, {
+    key: "displayTime",
+    value: function displayTime() {
+      var nowTime = this.state.time;
+      var year = nowTime.getFullYear();
+      var month = ("0" + (nowTime.getMonth() + 1)).slice(-2);
+      var date = ('0' + nowTime.getDate()).slice(-2);
+      var hour = ('0' + nowTime.getHours()).slice(-2);
+      var minute = ('0' + nowTime.getMinutes()).slice(-2);
+      var second = ('0' + nowTime.getSeconds()).slice(-2);
+      return "".concat(year, "/").concat(month, "/").concat(date, " ").concat(hour, ":").concat(minute, ":").concat(second);
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/React.createElement("div", null, this.displayTime());
+    }
+  }]);
 
-    _createClass(Clock, [{
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            var _this2 = this;
-
-            setInterval(function () {
-                return _this2.timerID = _this2.tick();
-            }, 1000);
-        }
-    }, {
-        key: "componentWillUnmount",
-        value: function componentWillUnmount() {
-            clearInterval(this.timerID);
-        }
-    }, {
-        key: "tick",
-        value: function tick() {
-            this.setState({
-                time: new Date()
-            });
-        }
-    }, {
-        key: "displayTime",
-        value: function displayTime() {
-            var nowTime = this.state.time;
-            var year = nowTime.getFullYear();
-            var month = ("0" + (nowTime.getMonth() + 1)).slice(-2);
-            var date = ('0' + nowTime.getDate()).slice(-2);
-            var hour = ('0' + nowTime.getHours()).slice(-2);
-            var minute = ('0' + nowTime.getMinutes()).slice(-2);
-            var second = ('0' + nowTime.getSeconds()).slice(-2);
-            return "".concat(year, "/").concat(month, "/").concat(date, " ").concat(hour, ":").concat(minute, ":").concat(second);
-        }
-    }, {
-        key: "render",
-        value: function render() {
-            return /*#__PURE__*/React.createElement("div", null, this.displayTime());
-        }
-    }]);
-
-    return Clock;
+  return Clock;
 }(React.Component);
 
 var Canvas = /*#__PURE__*/function (_React$Component2) {
-    _inherits(Canvas, _React$Component2);
+  _inherits(Canvas, _React$Component2);
 
-    var _super2 = _createSuper(Canvas);
+  var _super2 = _createSuper(Canvas);
 
-    function Canvas(props) {
-        var _this3;
+  function Canvas(props) {
+    var _this3;
 
-        _classCallCheck(this, Canvas);
+    _classCallCheck(this, Canvas);
 
-        _this3 = _super2.call(this, props);
-        _this3.state = {
-            Width: window.innerWidth - 20,
-            Height: window.innerHeight - 20,
-            left_position: 0,
-            top_position: 0,
-            left_increase: true,
-            top_increase: false,
-            dx: 2,
-            dy: 2,
-            interval: 10,
-            btnNum: 0
-        };
-        return _this3;
+    _this3 = _super2.call(this, props);
+    _this3.state = {
+      Width: window.innerWidth - 20,
+      Height: window.innerHeight - 120,
+      left_position: 0,
+      top_position: 0,
+      left_increase: true,
+      top_increase: true,
+      dx: 2,
+      dy: 2,
+      interval: 10,
+      btnNum: 0,
+      value: 2
+    };
+    _this3.handleChange = _this3.handleChange.bind(_assertThisInitialized(_this3));
+    return _this3;
+  }
+
+  _createClass(Canvas, [{
+    key: "handleChange",
+    value: function handleChange(event) {
+      var speed = event.target.value;
+      this.setState({
+        value: speed,
+        dx: Number(speed),
+        dy: Number(speed)
+      });
     }
+  }, {
+    key: "btnColors",
+    value: function btnColors() {
+      var colors = ['primary', 'info', 'success', 'warning', 'danger'];
+      var num = this.state.btnNum % 5;
+      var btnColor = colors[num];
+      return 'btn btn-' + btnColor;
+    }
+  }, {
+    key: "componentDidMount",
+    value: function componentDidMount() {
+      var _this4 = this;
 
-    _createClass(Canvas, [{
-        key: "btnColors",
-        value: function btnColors() {
-            var colors = ['primary', 'info', 'success', 'warning', 'danger'];
-            var num = this.state.btnNum % 5;
-            var btnColor = colors[num];
-            return 'btn btn-' + btnColor;
+      setInterval(function () {
+        return _this4.MoveID = _this4.move();
+      }, this.state.interval);
+    }
+  }, {
+    key: "componentWillUnmount",
+    value: function componentWillUnmount() {
+      clearInterval(this.MoveID);
+    }
+  }, {
+    key: "move",
+    value: function move() {
+      var x = this.state.left_position;
+      var y = this.state.top_position;
+      var x_add = this.state.left_increase;
+      var y_add = this.state.top_increase;
+      var dx = this.state.dx;
+      var dy = this.state.dy;
+
+      if (x_add) {
+        this.setState({
+          left_position: x + dx
+        });
+
+        if (x >= this.state.Width - 100 - dx * 2) {
+          this.setState({
+            left_increase: false,
+            btnNum: this.state.btnNum + 1
+          });
         }
-    }, {
-        key: "componentDidMount",
-        value: function componentDidMount() {
-            var _this4 = this;
+      } else {
+        this.setState({
+          left_position: x - dx
+        });
 
-            setInterval(function () {
-                return _this4.MoveID = _this4.move();
-            }, this.state.interval);
+        if (x <= dx) {
+          this.setState({
+            left_increase: true,
+            btnNum: this.state.btnNum + 1
+          });
         }
-    }, {
-        key: "componentWillUnmount",
-        value: function componentWillUnmount() {
-            clearInterval(this.MoveID);
+      }
+
+      if (y_add) {
+        this.setState({
+          top_position: y + dy
+        });
+
+        if (y >= this.state.Height - 50 - dy * 2) {
+          this.setState({
+            top_increase: false,
+            btnNum: this.state.btnNum + 1
+          });
         }
-    }, {
-        key: "move",
-        value: function move() {
-            var x = this.state.left_position;
-            var y = this.state.top_position;
-            var x_add = this.state.left_increase;
-            var y_add = this.state.top_increase;
-            var dx = this.state.dx;
-            var dy = this.state.dy;
+      } else {
+        this.setState({
+          top_position: y - dy
+        });
 
-            if (x_add) {
-                this.setState({
-                    left_position: x + dx
-                });
-
-                if (x >= this.state.Width - 100 - dx * 2) {
-                    this.setState({
-                        left_increase: false,
-                        btnNum: this.state.btnNum + 1
-                    });
-                }
-            } else {
-                this.setState({
-                    left_position: x - dx
-                });
-
-                if (x <= dx) {
-                    this.setState({
-                        left_increase: true,
-                        btnNum: this.state.btnNum + 1
-                    });
-                }
-            }
-
-            if (y_add) {
-                this.setState({
-                    top_position: y + dy
-                });
-
-                if (y >= this.state.Height - 50 - dy * 2) {
-                    this.setState({
-                        top_increase: false,
-                        btnNum: this.state.btnNum + 1
-                    });
-                }
-            } else {
-                this.setState({
-                    top_position: y - dy
-                });
-
-                if (y <= dy) {
-                    this.setState({
-                        top_increase: true,
-                        btnNum: this.state.btnNum + 1
-                    });
-                }
-            }
+        if (y <= dy) {
+          this.setState({
+            top_increase: true,
+            btnNum: this.state.btnNum + 1
+          });
         }
-    }, {
-        key: "render",
-        value: function render() {
-            return /*#__PURE__*/React.createElement("div", {
-                style: {
-                    width: this.state.Width,
-                    height: this.state.Height,
-                    border: 'solid 1px #00bfff',
-                    margin: 10,
-                    position: 'absolute'
-                }
-            }, /*#__PURE__*/React.createElement("div", {
-                style: {
-                    position: 'relative',
-                    margin: 0,
-                    padding: 0,
-                    width: '100px',
-                    height: '50px',
-                    left: this.state.left_position + 'px',
-                    top: this.state.top_position + 'px'
-                },
-                className: this.btnColors()
-            }, /*#__PURE__*/React.createElement(Clock, null)));
+      }
+    }
+  }, {
+    key: "render",
+    value: function render() {
+      return /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+        style: {
+          width: this.state.Width,
+          height: this.state.Height,
+          border: 'solid 1px #00bfff',
+          margin: 10
         }
-    }]);
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          position: 'relative',
+          margin: 0,
+          padding: 0,
+          width: '100px',
+          height: '50px',
+          left: this.state.left_position + 'px',
+          top: this.state.top_position + 'px'
+        },
+        className: this.btnColors()
+      }, /*#__PURE__*/React.createElement(Clock, null))), /*#__PURE__*/React.createElement("div", {
+        style: {
+          height: 80,
+          width: this.state.Width,
+          margin: '10px'
+        }
+      }, /*#__PURE__*/React.createElement("label", {
+        htmlFor: "speedRange",
+        className: "form-range"
+      }, "\u901F\u5EA6 : ", this.state.value), /*#__PURE__*/React.createElement("input", {
+        id: "speedRange",
+        className: "form-range",
+        type: "range",
+        min: "0",
+        max: "10",
+        value: this.state.value,
+        onChange: this.handleChange
+      })));
+    }
+  }]);
 
-    return Canvas;
+  return Canvas;
 }(React.Component);
 
 var App = function App() {
-    return /*#__PURE__*/React.createElement("div", {
-        style: {
-            position: 'relative'
-        }
-    }, /*#__PURE__*/React.createElement(Canvas, null));
+  return /*#__PURE__*/React.createElement("div", {
+    style: {
+      position: 'relative'
+    }
+  }, /*#__PURE__*/React.createElement(Canvas, null));
 };
 
-ReactDOM.render(React.createElement(App), document.getElementById('root'));
+ReactDOM.render( /*#__PURE__*/React.createElement(App), document.getElementById('root'));
