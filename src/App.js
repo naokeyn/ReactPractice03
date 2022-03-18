@@ -17,6 +17,7 @@ class Clock extends React.Component {
 
   componentWillUnmount() {
     clearInterval(this.timerID);
+    this.props.cancel();
   }
 
   tick() {
@@ -60,10 +61,12 @@ class Canvas extends React.Component {
       dy: 2,
       interval: 10,
       btnNum: 0,
-      value: 2
+      value: 2,
+      rotate: 0
     };
 
     this.handleChange = this.handleChange.bind(this);
+    this.rotateChange = this.rotateChange.bind(this);
   }
 
   handleChange(event) {
@@ -72,6 +75,12 @@ class Canvas extends React.Component {
       value: speed,
       dx: Number(speed),
       dy: Number(speed)
+    });
+  }
+
+  rotateChange(event) {
+    this.setState({
+      rotate: event.target.value
     });
   }
 
@@ -128,7 +137,7 @@ class Canvas extends React.Component {
     }
     if (y_add) {
       this.setState({ top_position: y + dy });
-      if (y >= this.state.Height - 50 - dy * 2) {
+      if (y >= this.state.Height - 100 - dy * 2) {
         this.setState({
           top_increase: false,
           btnNum: this.state.btnNum + 1
@@ -164,39 +173,65 @@ class Canvas extends React.Component {
             margin: 0,
             padding: 0,
             width: '100px',
-            height: '50px',
+            height: '100px',
             left: this.state.left_position + 'px',
-            top: this.state.top_position + 'px'
+            top: this.state.top_position + 'px',
+            borderRadius: '50%'
           }}
             className={this.btnColors()}
           >
-            <Clock />
+            <div
+              style={{
+                position: 'relative',
+                top: '25px',
+                transform: `rotate(${this.state.rotate}deg)`
+              }}
+            >
+
+              <Clock />
+            </div>
           </div>
         </div>
 
-          <div
-            style={{
-              height : 80,
-              width: this.state.Width,
-              margin: '10px'
-            }}
+        <div
+          style={{
+            height: 80,
+            width: this.state.Width,
+            margin: '10px'
+          }}
+        >
+          <label
+            htmlFor='speedRange'
+            className='form-range'
           >
-            <label
-              htmlFor='speedRange'
-              className='form-range'
-            >
-              速度 : {this.state.value}
-            </label>
-            <input 
-              id="speedRange"
-              className='form-range'
-              type='range'
-              min='0'
-              max='10'
-              value={this.state.value}
-              onChange={this.handleChange}
-            />
-          </div>
+            速度 : {this.state.value} 
+          </label>
+          <input
+            id="speedRange"
+            className='form-range'
+            type='range'
+            min='0'
+            max='10'
+            value={this.state.value}
+            onChange={this.handleChange}
+          />
+
+          <label
+            htmlFor='rotateRange'
+            className='form-range'
+          >
+            回転 : {this.state.rotate} [deg]
+          </label>
+          <input
+            id="rotateRange"
+            className='form-range'
+            type='range'
+            min='0'
+            max='360'
+            value={this.state.rotate}
+            onChange={this.rotateChange}
+          />
+        </div>
 
       </div>
     );

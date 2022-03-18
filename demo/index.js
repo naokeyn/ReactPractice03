@@ -20,7 +20,7 @@ function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) ===
 
 function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
 
-function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () { })); return true; } catch (e) { return false; } }
 
 function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); }
 
@@ -54,6 +54,7 @@ var Clock = /*#__PURE__*/function (_React$Component) {
     key: "componentWillUnmount",
     value: function componentWillUnmount() {
       clearInterval(this.timerID);
+      this.props.cancel();
     }
   }, {
     key: "tick",
@@ -106,9 +107,11 @@ var Canvas = /*#__PURE__*/function (_React$Component2) {
       dy: 2,
       interval: 10,
       btnNum: 0,
-      value: 2
+      value: 2,
+      rotate: 0
     };
     _this3.handleChange = _this3.handleChange.bind(_assertThisInitialized(_this3));
+    _this3.rotateChange = _this3.rotateChange.bind(_assertThisInitialized(_this3));
     return _this3;
   }
 
@@ -120,6 +123,13 @@ var Canvas = /*#__PURE__*/function (_React$Component2) {
         value: speed,
         dx: Number(speed),
         dy: Number(speed)
+      });
+    }
+  }, {
+    key: "rotateChange",
+    value: function rotateChange(event) {
+      this.setState({
+        rotate: event.target.value
       });
     }
   }, {
@@ -183,7 +193,7 @@ var Canvas = /*#__PURE__*/function (_React$Component2) {
           top_position: y + dy
         });
 
-        if (y >= this.state.Height - 50 - dy * 2) {
+        if (y >= this.state.Height - 100 - dy * 2) {
           this.setState({
             top_increase: false,
             btnNum: this.state.btnNum + 1
@@ -218,12 +228,19 @@ var Canvas = /*#__PURE__*/function (_React$Component2) {
           margin: 0,
           padding: 0,
           width: '100px',
-          height: '50px',
+          height: '100px',
           left: this.state.left_position + 'px',
-          top: this.state.top_position + 'px'
+          top: this.state.top_position + 'px',
+          borderRadius: '50%'
         },
         className: this.btnColors()
-      }, /*#__PURE__*/React.createElement(Clock, null))), /*#__PURE__*/React.createElement("div", {
+      }, /*#__PURE__*/React.createElement("div", {
+        style: {
+          position: 'relative',
+          top: '25px',
+          transform: "rotate(".concat(this.state.rotate, "deg)")
+        }
+      }, /*#__PURE__*/React.createElement(Clock, null)))), /*#__PURE__*/React.createElement("div", {
         style: {
           height: 80,
           width: this.state.Width,
@@ -240,6 +257,17 @@ var Canvas = /*#__PURE__*/function (_React$Component2) {
         max: "10",
         value: this.state.value,
         onChange: this.handleChange
+      }), /*#__PURE__*/React.createElement("label", {
+        htmlFor: "rotateRange",
+        className: "form-range"
+      }, "\u56DE\u8EE2 : ", this.state.rotate, " [deg]"), /*#__PURE__*/React.createElement("input", {
+        id: "rotateRange",
+        className: "form-range",
+        type: "range",
+        min: "0",
+        max: "360",
+        value: this.state.rotate,
+        onChange: this.rotateChange
       })));
     }
   }]);
