@@ -1,5 +1,4 @@
-# Animation using React.js
+# React.jsでスクリーンセーバみたいなのを作ってみた
 
-Code is [here](https://github.com/naokeyn/ReactPractice03/blob/master/src/App.js).
-
-Demonstration is [here](https://naokeyn.github.io/ReactPractice03/demo/index.html).
+- メインのコードは[ここ](https://github.com/naokeyn/ReactPractice03/blob/master/src/App.js)．
+- サンプルページは[ここ](https://naokeyn.github.io/ReactPractice03/demo/index.html).
